@@ -36,6 +36,25 @@ namespace WeatherSpace
             return 52;
         }
     };
+
+    class RainyStub : public IWeatherSensor {
+        int Humidity() const override { 
+            return 72;
+        }
+
+        int Precipitation() const override {
+            return 70;
+        }
+
+        double TemperatureInC() const override {
+            return 26;
+        }
+
+        int WindSpeedKMPH() const override {
+            return 40;
+        }
+    };
+
     string Report(const IWeatherSensor& sensor)
     {
         int precipitation = sensor.Precipitation();
@@ -54,10 +73,9 @@ namespace WeatherSpace
     
     void TestRainy()
     {
-        SensorStub sensor;
-        string report = Report(sensor);
-        cout << report << endl;
-        assert(report.find("rain") != string::npos);
+        RainyStub sensor;
+        std::string report = WeatherSpace::Report(sensor);
+        assert(report.find("rain") != std::string::npos);
     }
 
     void TestHighPrecipitation()
