@@ -20,38 +20,24 @@ namespace WeatherSpace
     /// without needing the actual Sensor during development
     /// </summary>
     class SensorStub : public IWeatherSensor {
+        double temperature;
+        int precipitation;
+        int humidity;
+        int windSpeed;
+
+        public:
+            SensorStub(double temp, int precip, int hum, int wind) : temperature(temp), precipitation(precip), humidity(hum), windSpeed(wind) {}
+        double TemperatureInC() const override {
+            return temperature;
+        }
+        int Precipitation() const override {
+            return precipitation;
+        }
         int Humidity() const override {
-            return 72;
+            return humidity;
         }
-
-        int Precipitation() const override {
-            return 70;
-        }
-
-        double TemperatureInC() const override {
-            return 26;
-        }
-
         int WindSpeedKMPH() const override {
-            return 52;
-        }
-    };
-
-    class RainyStub : public IWeatherSensor {
-        int Humidity() const override { 
-            return 72;
-        }
-
-        int Precipitation() const override {
-            return 70;
-        }
-
-        double TemperatureInC() const override {
-            return 26;
-        }
-
-        int WindSpeedKMPH() const override {
-            return 40;
+            return windSpeed;
         }
     };
 
@@ -73,8 +59,8 @@ namespace WeatherSpace
     
     void TestRainy()
     {
-        RainyStub sensor;
-        std::string report = WeatherSpace::Report(sensor);
+        SensorStub sensor(26, 70, 72, 40); // temp, precipitation, humidity, wind
+        std::string report = Report(sensor);
         assert(report.find("rain") != std::string::npos);
     }
 
@@ -82,11 +68,11 @@ namespace WeatherSpace
     {
         // This instance of stub needs to be different-
         // to give high precipitation (>60) and low wind-speed (<50)
-        SensorStub sensor;
+        SensorStub sensor(26, 70, 72, 52);
 
         // strengthen the assert to expose the bug
         // (function returns Sunny day, it should predict rain)
-        string report = Report(sensor);
+        std::string report = Report(sensor);
         assert(report.length() > 0);
     }
 }
