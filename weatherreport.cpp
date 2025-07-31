@@ -20,27 +20,22 @@ namespace WeatherSpace
     /// without needing the actual Sensor during development
     /// </summary>
     class SensorStub : public IWeatherSensor {
-        double temperature;
-        int precipitation;
-        int humidity;
-        int windSpeed;
-
-        public:
-            SensorStub(double temp, int precip, int hum, int wind) : temperature(temp), precipitation(precip), humidity(hum), windSpeed(wind) {}
-        double TemperatureInC() const override {
-            return temperature;
-        }
-        int Precipitation() const override {
-            return precipitation;
-        }
         int Humidity() const override {
-            return humidity;
+            return 72;
         }
+
+        int Precipitation() const override {
+            return 70;
+        }
+
+        double TemperatureInC() const override {
+            return 26;
+        }
+
         int WindSpeedKMPH() const override {
-            return windSpeed;
+            return 52;
         }
     };
-
     string Report(const IWeatherSensor& sensor)
     {
         int precipitation = sensor.Precipitation();
@@ -59,20 +54,21 @@ namespace WeatherSpace
     
     void TestRainy()
     {
-        SensorStub sensor(26, 70, 72, 40); // temp, precipitation, humidity, wind
-        std::string report = Report(sensor);
-        assert(report.find("rain") != std::string::npos);
+        SensorStub sensor;
+        string report = Report(sensor);
+        cout << report << endl;
+        assert(report.find("rain") != string::npos);
     }
 
     void TestHighPrecipitation()
     {
         // This instance of stub needs to be different-
         // to give high precipitation (>60) and low wind-speed (<50)
-        SensorStub sensor(26, 70, 72, 52);
+        SensorStub sensor;
 
         // strengthen the assert to expose the bug
         // (function returns Sunny day, it should predict rain)
-        std::string report = Report(sensor);
+        string report = Report(sensor);
         assert(report.length() > 0);
     }
 }
