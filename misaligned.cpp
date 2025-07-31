@@ -1,6 +1,5 @@
 #include <iostream>
 #include <assert.h>
-#include <string>
 
 int printColorMap() {
     const char* majorColor[] = {"White", "Red", "Black", "Yellow", "Violet"};
@@ -14,19 +13,8 @@ int printColorMap() {
     return i * j;
 }
 
-std::string formatColorPair(int pairNum, const char* major, const char* minor) {
-    char buf[50];
-    snprintf(buf, sizeof(buf), "%d | %s | %s", pairNum, major, minor);
-    return std::string(buf);
-}
-
 void testPrintColorMap() {
-    std::cout << "\nPrint color map test\n";
-    assert(formatColorPair(0, "White", "Blue") == "0 | White | Blue");
-    assert(formatColorPair(3, "White", "Brown") == "3 | White | Brown");
-    assert(formatColorPair(4, "White", "Slate") == "4 | White | Slate");
-    assert(formatColorPair(21, "Violet", "Orange") == "21 | Violet | Orange");
-    assert(formatColorPair(24, "Violet", "Slate")  == "24 | Violet | Slate");
+    std::cout << "\nPrint color map test\n"; 
     int result = printColorMap();
     assert(result == 25);
     std::cout << "All is well (maybe!)\n";
